@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Editor | Portfolio</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./js/tailwind.config.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-white text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 antialiased selection:bg-zinc-100 dark:selection:bg-zinc-900">
+    <main class="min-h-screen">
+        <header class="sticky top-0 z-40 border-b border-zinc-100 dark:border-zinc-900 bg-white/95 dark:bg-zinc-950/90 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
+                <div class="space-y-0.5">
+                    <h1 class="text-sm font-bold tracking-tight text-zinc-950 dark:text-white">Project Editor</h1>
+                    <p id="editor-status" class="text-[10px] font-mono text-zinc-400">loading projects.json</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="./index.html" class="api-btn inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900">
+                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                        Portfolio
+                    </a>
+                    <button id="theme-toggle" class="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-500 dark:text-zinc-400" aria-label="Toggle Theme">
+                        <i class="theme-toggle-icon fa-solid fa-moon text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-5 md:px-8 py-8 grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)] gap-8">
+            <aside class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">Projects</span>
+                    <button id="add-project" class="api-btn p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900" title="프로젝트 추가">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                    </button>
+                </div>
+
+                <div id="project-tabs" class="space-y-2"></div>
+
+                <div class="pt-4 border-t border-zinc-100 dark:border-zinc-900 space-y-2">
+                    <button id="export-json" class="api-btn w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-zinc-950 dark:bg-zinc-100 text-white dark:text-zinc-950 text-xs font-mono">
+                        <i class="fa-solid fa-file-export text-[10px]"></i>
+                        Export JSON
+                    </button>
+                    <label class="api-btn w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 cursor-pointer">
+                        <i class="fa-solid fa-file-import text-[10px]"></i>
+                        Import JSON
+                        <input id="import-json" type="file" accept="application/json,.json" class="hidden">
+                    </label>
+                    <button id="reset-draft" class="api-btn w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900">
+                        <i class="fa-solid fa-rotate-left text-[10px]"></i>
+                        Reset Draft
+                    </button>
+                </div>
+            </aside>
+
+            <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+                <form id="project-form" class="space-y-8"></form>
+
+                <div class="xl:sticky xl:top-24 space-y-4">
+                    <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">Preview</span>
+                    <div id="project-preview" class="space-y-8"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="./js/project-renderer.js" defer></script>
+    <script src="./js/project-editor.js" defer></script>
+</body>
+</html>

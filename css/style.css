@@ -1,0 +1,64 @@
+/* [커스텀 테마 설정 변수]
+   포트폴리오의 전반적인 색상 톤을 바꾸고 싶다면 아래 변수의 색상 코드만 변경하세요.
+*/
+:root {
+    --point-color: #10b981;
+    --point-color-dark: #059669;
+
+    --bg-light: #ffffff;
+    --text-light: #27272a;
+    --border-light: #f4f4f5;
+
+    --bg-dark: #09090b;
+    --text-dark: #e4e4e7;
+    --border-dark: #18181b;
+}
+
+body {
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* API 테스터 버튼 활성화 모션 */
+.api-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.api-btn:active {
+    transform: scale(0.97);
+}
+
+/* 왼쪽 사이드바 네비게이션 활성화 표시 */
+.nav-link.active {
+    color: var(--point-color);
+    font-weight: 700;
+}
+
+.nav-link.active::before {
+    content: '->';
+    margin-right: 6px;
+    color: var(--point-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* 맞춤형 스크롤바 디자인 */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e4e4e7;
+    border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #27272a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1aa;
+}
