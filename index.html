@@ -1,246 +1,979 @@
-<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Backend Developer Portfolio</title>
-    <meta
-      name="description"
-      content="Spring Boot, Java, JPA, WebSocket 기반 백엔드 신입 개발자 포트폴리오입니다."
-    >
-    <meta property="og:title" content="Backend Developer Portfolio">
-    <meta
-      property="og:description"
-      content="Goods Market 백엔드 프로젝트를 중심으로 API, 인증, 실시간 채팅, 거래 도메인 구현 경험을 정리했습니다."
-    >
-    <meta property="og:type" content="website">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <header class="topbar">
-      <nav class="nav" aria-label="주요 메뉴">
-        <a class="brand" href="#top" aria-label="홈으로 이동">
-          <span class="brand-icon" aria-hidden="true">dev</span>
-          <span>TODO: 이름</span>
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- [수정 영역] 브라우저 탭에 표시될 타이틀 -->
+    <title>Backend Developer Portfolio | 홍길동</title>
+    
+    <!-- 외부 CDN 설정 (Tailwind CSS & Icons) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 구글 폰트 설정 (Pretendard & JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind 테마 확장 구성 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        zinc: {
+                            950: '#09090b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- ==========================================
+         [STYLE SHEET AREA] - style.css 역할을 하는 공간
+         ========================================== -->
+    <style>
+        /* [커스텀 테마 설정 변수]
+          포트폴리오의 전반적인 색상 톤을 바꾸고 싶다면 아래 변수의 색상 코드만 변경하세요!
+        */
+        :root {
+            --point-color: #10b981;       /* 포인트 에메랄드 그린 컬러 */
+            --point-color-dark: #059669;  /* 다크 테마용 어두운 그린 컬러 */
+            
+            --bg-light: #ffffff;          /* 라이트 모드 배경 */
+            --text-light: #27272a;        /* 라이트 모드 글씨색 */
+            --border-light: #f4f4f5;      /* 라이트 모드 경계선 */
+            
+            --bg-dark: #09090b;           /* 다크 모드 배경 */
+            --text-dark: #e4e4e7;         /* 다크 모드 글씨색 */
+            --border-dark: #18181b;       /* 다크 모드 경계선 */
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        /* API 테스터 버튼 활성화 모션 */
+        .api-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .api-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* 왼쪽 사이드바 네비게이션 활성화(Active) 표시 스타일 */
+        .nav-link.active {
+            color: var(--point-color);
+            font-weight: 700;
+        }
+        .nav-link.active::before {
+            content: '→';
+            margin-right: 6px;
+            color: var(--point-color);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* 맞춤형 스크롤바 디자인 */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e4e4e7;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1aa;
+        }
+    </style>
+</head>
+<body class="bg-white text-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 transition-colors duration-300 antialiased overflow-x-hidden selection:bg-zinc-100 dark:selection:bg-zinc-900">
+
+    <!-- ==========================================
+         [MOBILE NAVIGATION HEADER] - 모바일 화면용 상단바
+         ========================================== -->
+    <header class="md:hidden sticky top-0 z-50 flex items-center justify-between px-6 h-16 bg-white/95 dark:bg-zinc-950/90 border-b border-zinc-200 dark:border-zinc-900 backdrop-blur-sm">
+        <!-- [수정 영역] 모바일 상단 로고 텍스트 -->
+        <a href="#" class="font-mono text-sm tracking-tight font-bold text-zinc-900 dark:text-zinc-100">
+            HONG.BACKEND()
         </a>
-        <div class="nav-links">
-          <a href="#project">Project</a>
-          <a href="#impact">Impact</a>
-          <a href="#stack">Stack</a>
-          <a href="#contact">Contact</a>
+        <div class="flex items-center space-x-2">
+            <!-- 라이트/다크모드 전환 단추 -->
+            <button id="theme-toggle-mobile" class="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-500 dark:text-zinc-400" aria-label="Toggle Theme">
+                <i class="theme-toggle-icon fa-solid fa-moon text-sm"></i>
+            </button>
+            <!-- 모바일 메뉴 서랍 열기 단추 -->
+            <button id="mobile-menu-btn" class="p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400">
+                <i class="fa-solid fa-bars text-sm"></i>
+            </button>
         </div>
-      </nav>
     </header>
 
-    <main id="top">
-      <section class="hero">
-        <div class="hero-inner">
-          <div class="hero-copy">
-            <p class="kicker">Junior Backend Developer</p>
-            <h1>Spring Boot로 거래 흐름을 설계하는 백엔드 개발자</h1>
-            <p class="lead">
-              상품 등록, 채팅, 약속, 거래 완료, 리뷰까지 이어지는 백엔드 흐름을
-              구현했습니다. 단순 CRUD보다 상태 전이, 인증, 실시간 이벤트, 조회 성능을
-              함께 보는 개발자를 목표로 합니다.
-            </p>
-            <div class="hero-actions">
-              <a class="btn primary" href="#project">프로젝트 보기</a>
-              <a class="btn ghost" href="https://github.com/TODO-username">GitHub</a>
+    <!-- ==========================================
+         [MOBILE MENU DRAWER] - 모바일 메뉴 오버레이 서랍
+         ========================================== -->
+    <div id="mobile-drawer" class="fixed inset-0 z-40 bg-white dark:bg-zinc-950 hidden md:hidden flex flex-col justify-between p-8 pt-24 transition-all duration-300">
+        <div class="space-y-6">
+            <nav class="flex flex-col space-y-4 text-lg font-medium tracking-tight">
+                <a href="#about" class="mobile-nav-link text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white">Introduction</a>
+                <a href="#skills" class="mobile-nav-link text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white">SkillSet</a>
+                <a href="#projects" class="mobile-nav-link text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white">Portfolio</a>
+                <a href="#experience" class="mobile-nav-link text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white">Experiences</a>
+                <a href="#certification" class="mobile-nav-link text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white">Certification</a>
+                <a href="#contact" class="mobile-nav-link text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white">Contact</a>
+            </nav>
+        </div>
+        <div class="border-t border-zinc-200 dark:border-zinc-900 pt-6">
+            <!-- [수정 영역] 모바일 메뉴 하단 카피라이트 -->
+            <p class="text-xs text-zinc-400 dark:text-zinc-500 font-mono">© 2026 Hong GilDong. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         [MAIN WEB LAYOUT WRAPPER] - 전체 웹 레이아웃 시작
+         ========================================== -->
+    <div class="min-h-screen flex flex-col md:flex-row">
+        
+        <!-- ==========================================
+             [LEFT FIXED SIDEBAR] - 좌측 고정 프로필 사이드바
+             ========================================== -->
+        <aside id="header" class="hidden md:flex md:w-60 lg:w-64 flex-col justify-between p-6 lg:p-8 border-r border-zinc-100 dark:border-zinc-900 bg-white dark:bg-zinc-950/60 h-screen sticky top-0 overflow-y-auto z-40">
+            
+            <div class="space-y-6">
+                <!-- 프로필 헤더 (아바타 이니셜 & 이름 및 간단 소개) -->
+                <div class="space-y-3">
+                    <!-- [수정 영역] 프로필 원형 아바타 안의 이니셜 텍스트 -->
+                    <div class="w-14 h-14 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center text-zinc-800 dark:text-zinc-100 font-mono text-lg font-bold tracking-tight shadow-sm">
+                        GD()
+                    </div>
+                    <div class="space-y-0.5">
+                        <!-- [수정 영역] 지원자 한글 이름 -->
+                        <h1 class="text-base font-bold tracking-tight text-zinc-900 dark:text-white">홍길동</h1>
+                        <!-- [수정 영역] 지원 분야 타이틀 -->
+                        <p class="text-[10px] font-mono text-zinc-500 dark:text-zinc-400">Junior Backend Developer</p>
+                    </div>
+                </div>
+
+                <!-- 실시간 구직 상태 뱃지 -->
+                <div class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 text-[9px] font-mono w-fit border border-zinc-100 dark:border-zinc-800">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <!-- [수정 영역] 구직 활성화 상태 상태값 -->
+                    <span>status: available</span>
+                </div>
+
+                <!-- 데스크톱 사이드바 네비게이션 메뉴 목록 -->
+                <nav class="flex flex-col space-y-3 text-[11px] font-medium tracking-tight text-zinc-400 dark:text-zinc-500 pt-2 border-t border-zinc-100 dark:border-zinc-900">
+                    <a href="#about" class="nav-link hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">Introduction</a>
+                    <a href="#skills" class="nav-link hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">SkillSet</a>
+                    <a href="#projects" class="nav-link hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">Portfolio</a>
+                    <a href="#experience" class="nav-link hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">Experiences</a>
+                    <a href="#certification" class="nav-link hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">Certification</a>
+                    <a href="#contact" class="nav-link hover:text-emerald-600 dark:hover:text-emerald-400 transition-all">Contact</a>
+                </nav>
             </div>
-          </div>
 
-          <aside class="code-window" aria-label="포트폴리오 요약">
-            <div class="window-bar">
-              <span></span>
-              <span></span>
-              <span></span>
-              <strong>goods-market.yml</strong>
+            <!-- 사이드바 최하단 기능 버튼 및 카피라이트 -->
+            <div class="space-y-5 pt-5 border-t border-zinc-100 dark:border-zinc-900">
+                <div class="flex items-center justify-between">
+                    <!-- [수정 영역] 좌측 하단 아이콘용 소셜 채널 링크들 -->
+                    <div class="flex items-center space-x-2.5 text-zinc-400 dark:text-zinc-500">
+                        <a href="https://github.com/tunkcalb" target="_blank" class="hover:text-zinc-950 dark:hover:text-white transition-all" title="GitHub 바로가기">
+                            <i class="fa-brands fa-github text-sm"></i>
+                        </a>
+                        <a href="https://velog.io/@tunkcalb/posts" target="_blank" class="hover:text-zinc-950 dark:hover:text-white transition-all" title="Blog 바로가기">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                        <a href="mailto:wjdgusdndi@gmail.com" class="hover:text-zinc-950 dark:hover:text-white transition-all" title="이메일 보내기">
+                            <i class="fa-regular fa-envelope text-xs"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- 데스크톱 라이트/다크모드 전환 단추 -->
+                    <button id="theme-toggle" class="p-1.5 rounded-lg border border-zinc-50 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-400 dark:text-zinc-500 transition-all" aria-label="Toggle Theme">
+                        <i class="theme-toggle-icon fa-solid fa-moon text-[10px]"></i>
+                    </button>
+                </div>
+                
+                <!-- [수정 영역] 하단 카피라이트 및 부가 설명 -->
+                <p class="text-[9px] text-zinc-400 dark:text-zinc-600 font-mono leading-relaxed">
+                    © 2026 HGD. All rights reserved.<br>
+                    Clean Column Layout.
+                </p>
             </div>
-            <pre><code>backend:
-  language: Java 21
-  framework: Spring Boot 3.5
-  auth: JWT + Spring Security
-  realtime: WebSocket / STOMP
-  persistence:
-    - JPA
-    - Querydsl
-    - MyBatis
-  tests: 30+ test files</code></pre>
-          </aside>
-        </div>
-      </section>
+        </aside>
 
-      <section class="quick-info" aria-label="프로필 요약">
-        <div>
-          <span>Name</span>
-          <strong>TODO: 이름</strong>
-        </div>
-        <div>
-          <span>Role</span>
-          <strong>Backend Developer</strong>
-        </div>
-        <div>
-          <span>Focus</span>
-          <strong>API, Auth, Realtime</strong>
-        </div>
-        <div>
-          <span>Email</span>
-          <strong>TODO-email@example.com</strong>
-        </div>
-      </section>
+        <!-- ==========================================
+             [RIGHT SCROLLABLE CONTENT AREA] - 우측 스크롤 본문 시작
+             ========================================== -->
+        <main class="flex-1 min-w-0 bg-white dark:bg-zinc-950">
+            
+            <!-- ----------------------------------------
+                 SECTION 1: ABOUT (INTRODUCTION) - 자기소개 영역
+                 ---------------------------------------- -->
+            <section id="about" class="py-16 md:py-24 px-6 md:px-12 lg:px-16 border-b border-zinc-100 dark:border-zinc-900/60">
+                <div class="max-w-3xl space-y-12">
+                    
+                    <!-- 헤더 및 핵심 슬로건 -->
+                    <div class="space-y-4">
+                        <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">01. Introduction</span>
+                        <!-- [수정 영역] 대형 자기소개 슬로건 타이틀 -->
+                        <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white leading-tight">
+                            안정성, 성능, 무결성.<br>
+                            <span class="text-zinc-300 dark:text-zinc-600">타협 없는 백엔드 개발자</span> 홍길동입니다.
+                        </h3>
+                    </div>
 
-      <section id="project" class="section">
-        <div class="section-title">
-          <p class="kicker">Featured Project</p>
-          <h2>Goods Market</h2>
-          <p>
-            거리 기반 굿즈 거래/교환 플랫폼입니다. 백엔드는 거래 도메인의 핵심 흐름과
-            실시간 채팅, 인증 기반 API, 지역 기반 조회를 담당합니다.
-          </p>
-        </div>
+                    <!-- 상세 서술 문단 -->
+                    <!-- [수정 영역] 자기소개 상세 기술 줄글 -->
+                    <div class="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4 font-normal">
+                        <p>
+                            수많은 동시 요청 속에서도 한치의 데이터 오차도 허용하지 않는 **정합성 보장 아키텍처** 설계에 강한 자부심을 느낍니다. 
+                        </p>
+                        <p>
+                            단순 기능 구현을 완성이라 타협하지 않으며, 데이터 크기 증가에 대비하여 **쿼리 실행 계획 분석(MySQL EXPLAIN)**을 통해 인덱스를 효율적으로 재구축하고 성능 병목을 예방하는 것을 즐깁니다.
+                        </p>
+                        <p class="font-medium text-zinc-900 dark:text-zinc-200">
+                            "지속 가능한 시스템을 지탱하는, 보이지 않는 곳의 철학을 고수합니다."
+                        </p>
+                    </div>
 
-        <div class="bento">
-          <article class="card project-main">
-            <div class="card-label">Core Flow</div>
-            <h3>Listing -> ChatRoom -> Appointment -> Completion -> Review</h3>
-            <p>
-              상품이 등록되고 구매자와 판매자가 채팅을 시작한 뒤, 거래 약속과 완료,
-              리뷰 작성으로 이어지는 흐름을 백엔드 도메인으로 분리했습니다.
-            </p>
-            <div class="flow-line" aria-hidden="true">
-              <span>Listing</span>
-              <span>Chat</span>
-              <span>Trade</span>
-              <span>Review</span>
-            </div>
-          </article>
+                    <!-- 백엔드 API 플레이그라운드 카드 (인터랙티브 기능 요소) -->
+                    <div class="rounded-xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 overflow-hidden shadow-sm">
+                        <!-- 타이틀 탑바 -->
+                        <div class="px-4 py-3 bg-zinc-50 dark:bg-zinc-950/80 border-b border-zinc-100 dark:border-zinc-900 flex items-center justify-between">
+                            <span class="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">REST API PLAYGROUND</span>
+                            <span class="text-[9px] bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-mono px-2 py-0.5 rounded">STATUS: ONLINE</span>
+                        </div>
+                        
+                        <!-- 테스터 조작 인터페이스 -->
+                        <div class="p-5 space-y-4">
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">아래 Endpoint를 클릭해 홍길동의 개발자 인적정보 데이터를 실시간으로 GET 요청해보세요.</p>
+                            
+                            <!-- 요청 컨트롤러 버튼 -->
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="triggerApi('getProfile')" class="api-btn text-[11px] font-mono font-medium px-3 py-1.5 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+                                    <span class="text-emerald-500 font-bold">GET</span> /api/v1/profile
+                                </button>
+                                <button onclick="triggerApi('getSkills')" class="api-btn text-[11px] font-mono font-medium px-3 py-1.5 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+                                    <span class="text-emerald-500 font-bold">GET</span> /api/v1/skills
+                                </button>
+                                <button onclick="triggerApi('getProjects')" class="api-btn text-[11px] font-mono font-medium px-3 py-1.5 rounded-lg border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+                                    <span class="text-emerald-500 font-bold">GET</span> /api/v1/projects
+                                </button>
+                            </div>
 
-          <article class="card stat-card dark">
-            <span>Runtime</span>
-            <strong>Java 21</strong>
-            <p>Spring Boot 3.5 기반 API 서버</p>
-          </article>
+                            <!-- 응답 콘솔 박스 -->
+                            <div class="rounded-lg bg-zinc-950 p-4 border border-zinc-900 font-mono text-[11px] leading-relaxed relative">
+                                <div class="absolute right-3 top-3 text-[9px] text-zinc-600 flex items-center gap-3">
+                                    <span id="response-time">Latency: --</span>
+                                    <span id="response-status">Status: --</span>
+                                </div>
+                                <pre id="json-response" class="text-zinc-400 max-h-[160px] overflow-y-auto">/* Click an endpoint above to execute query... */</pre>
+                            </div>
+                        </div>
+                    </div>
 
-          <article class="card stat-card color">
-            <span>Testing</span>
-            <strong>30+</strong>
-            <p>도메인, 서비스, 컨트롤러 테스트 파일</p>
-          </article>
+                    <!-- 핵심 성과 수치 요약 지표 그리드 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-zinc-100 dark:border-zinc-900">
+                        <!-- [수정 영역] 성과 1 -->
+                        <div class="space-y-1">
+                            <span class="block text-2xl font-extrabold text-zinc-900 dark:text-white">92%</span>
+                            <span class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">테스트 커버리지 수립</span>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">단위/통합 테스트를 설계하여 안전한 리팩토링 안전망을 가집니다.</p>
+                        </div>
+                        <!-- [수정 영역] 성과 2 -->
+                        <div class="space-y-1">
+                            <span class="block text-2xl font-extrabold text-zinc-900 dark:text-white">40%</span>
+                            <span class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">인덱싱/쿼리 성능 향상</span>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">실행 계획을 기반으로 슬로우 쿼리를 선제 진단하고 인덱스 튜닝을 실행합니다.</p>
+                        </div>
+                        <!-- [수정 영역] 성과 3 -->
+                        <div class="space-y-1">
+                            <span class="block text-2xl font-extrabold text-zinc-900 dark:text-white">0건</span>
+                            <span class="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">동시성 데이터 정합성 오류</span>
+                            <p class="text-xs text-zinc-500 dark:text-zinc-400">분산 락을 기반으로 Race Condition을 안전하게 제어합니다.</p>
+                        </div>
+                    </div>
 
-          <article class="card">
-            <div class="card-label">API</div>
-            <h3>거래 기능을 API 단위로 분리</h3>
-            <ul class="clean-list">
-              <li>상품 초안 생성, 이미지 업로드, 공개/숨김</li>
-              <li>예약, 예약 취소, 판매 완료 처리</li>
-              <li>회원 프로필, 관심 상품, 내 동네 관리</li>
-            </ul>
-          </article>
+                </div>
+            </section>
 
-          <article class="card">
-            <div class="card-label">Query</div>
-            <h3>목록 화면을 고려한 조회</h3>
-            <ul class="clean-list">
-              <li>커서 기반 상품 목록 조회</li>
-              <li>지역 기반 필터링</li>
-              <li>관심 상품과 채팅방 요약 조회</li>
-            </ul>
-          </article>
-        </div>
-      </section>
+            <!-- ----------------------------------------
+                 SECTION 2: SKILLSET (TECH STACKS) - 기술 스택 영역
+                 ---------------------------------------- -->
+            <section id="skills" class="py-16 md:py-24 px-6 md:px-12 lg:px-16 border-b border-zinc-100 dark:border-zinc-900/60">
+                <div class="max-w-3xl space-y-12">
+                    
+                    <div class="space-y-3">
+                        <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">02. SkillSet</span>
+                        <p class="text-xs text-zinc-400">단순 키워드 나열이 아닌 실질적인 문제 해결 도구로서 다룰 수 있는 스택 명세입니다.</p>
+                    </div>
 
-      <section id="impact" class="section split-section">
-        <div class="section-title compact">
-          <p class="kicker">Problem Solving</p>
-          <h2>첫 메시지에서 새 채팅방이 안 보이던 문제</h2>
-          <p>
-            메시지는 DB에 저장됐지만 판매자 화면에는 새 채팅방이 즉시 나타나지 않았습니다.
-            원인은 수신자가 아직 새 채팅방 ID를 모르기 때문에 방 단위 토픽을 구독할 수
-            없다는 점이었습니다.
-          </p>
-        </div>
+                    <!-- 스택 상세 카테고리화 명세 시작 -->
+                    <div class="space-y-12">
+                        
+                        <!-- 카테고리 1: 사용하는 언어 및 프레임워크 -->
+                        <div class="space-y-6">
+                            <div class="flex items-center space-x-3 pb-3 border-b border-zinc-100 dark:border-zinc-900">
+                                <span class="w-1.5 h-3 bg-emerald-500 rounded-full"></span>
+                                <h3 class="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">사용하는 언어 및 프레임워크</h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- [수정 영역] 개별 스택 명세 수정 가능 (아이콘, 약자, 이름, 분류 배지, 한 줄 가치 설명) -->
+                                <!-- JAVA -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        JV
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">JAVA</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">OOP</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">SOLID 설계 준수, Stream API & JVM 메모리 격리 구조 이해</p>
+                                    </div>
+                                </div>
+                                <!-- Spring -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        SB
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">Spring Boot / Core</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600">Core</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">IoC/DI 기반 컴포넌트 생명주기 및 의존성 주입 최적화</p>
+                                    </div>
+                                </div>
+                                <!-- JPA -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        JP
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">JPA</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">ORM</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">지연 로딩 전략(N+1 분석), 영속성 컨텍스트 동작 제어</p>
+                                    </div>
+                                </div>
+                                <!-- QueryDsl -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        QD
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">QueryDSL</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">Type-Safe</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">동적 쿼리 작성 시 타입 안정성 확보 및 복잡한 서브쿼리 최적화</p>
+                                    </div>
+                                </div>
+                                <!-- MySQL -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        DB
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">MySQL</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600">Explain</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">쿼리 실행 계획 분석, 복합 인덱스 설계 및 트랜잭션 격리수준 관리</p>
+                                    </div>
+                                </div>
+                                <!-- Nginx -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        NX
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">Nginx</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">Proxy</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">리버스 프록시 인프라 중계 구성, 부하 분산(Load Balancing) 환경 제어</p>
+                                    </div>
+                                </div>
+                                <!-- Jenkins -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        JK
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">Jenkins</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">CI/CD</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">코드 빌드 자동화 가동 파이프라인 수립 및 자동 격리 테스트 배포 연동</p>
+                                    </div>
+                                </div>
+                                <!-- Web Standard (HTML/CSS) -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 font-mono text-xs font-bold group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                        WS
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">HTML / CSS</span>
+                                            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-500">Markup</span>
+                                        </div>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">시맨틱 웹 표준을 고려한 구조 설계 및 직관적인 웹 레이아웃 스타일 적용</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <div class="solution-board">
-          <article>
-            <span>01</span>
-            <h3>기존 구조</h3>
-            <p>`/sub/chat/room/{chatRoomId}` 방 단위 구독만 사용</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>원인</h3>
-            <p>첫 메시지 수신자는 아직 새 chatRoomId를 알 수 없음</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>개선</h3>
-            <p>`/sub/members/{memberId}/chat-events` 사용자 단위 채널 추가</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>결과</h3>
-            <p>첫 메시지에서만 목록 재조회, 이후 메시지는 기존 방 구독 유지</p>
-          </article>
-        </div>
-      </section>
+                        <!-- 카테고리 2: 개발 도구 -->
+                        <div class="space-y-6">
+                            <div class="flex items-center space-x-3 pb-3 border-b border-zinc-100 dark:border-zinc-900">
+                                <span class="w-1.5 h-3 bg-zinc-400 dark:bg-zinc-600 rounded-full"></span>
+                                <h3 class="text-xs font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">개발 협업 및 생산 도구</h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- IntelliJ -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-505 group-hover:bg-zinc-800 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-950 transition-all duration-300">
+                                        <i class="fa-solid fa-code-branch text-xs"></i>
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <span class="block text-xs font-bold text-zinc-800 dark:text-zinc-200">IntelliJ IDEA</span>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">JetBrains 개발 에코시스템을 활용한 생산성 보장 코딩 및 디버깅</p>
+                                    </div>
+                                </div>
+                                <!-- Git -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-505 group-hover:bg-zinc-800 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-950 transition-all duration-300">
+                                        <i class="fa-brands fa-git-alt text-sm"></i>
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <span class="block text-xs font-bold text-zinc-800 dark:text-zinc-200">Git / Version Control</span>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">Git-flow 브랜치 전략 설계 및 충돌(Conflict) 해결 능숙</p>
+                                    </div>
+                                </div>
+                                <!-- GitHub & GitLab -->
+                                <div class="group flex items-start p-3 rounded-lg border border-transparent hover:border-zinc-100 dark:hover:border-zinc-900 hover:bg-zinc-50/50 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-zinc-505 group-hover:bg-zinc-800 dark:group-hover:bg-zinc-100 group-hover:text-white dark:group-hover:text-zinc-950 transition-all duration-300">
+                                        <i class="fa-brands fa-github text-sm"></i>
+                                    </div>
+                                    <div class="ml-3.5 space-y-0.5">
+                                        <span class="block text-xs font-bold text-zinc-800 dark:text-zinc-200">GitHub / GitLab</span>
+                                        <p class="text-[11px] text-zinc-500 leading-tight">코드 리뷰 참여, Pull Request 연동 및 Webhook을 이용한 자동화 관리</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-      <section id="stack" class="section">
-        <div class="section-title">
-          <p class="kicker">Technical Stack</p>
-          <h2>백엔드 구현에 사용한 기술</h2>
-        </div>
+                </div>
+            </section>
 
-        <div class="stack-grid">
-          <article>
-            <h3>Application</h3>
-            <p>Spring Boot, Spring Security, Validation, OpenAPI</p>
-          </article>
-          <article>
-            <h3>Persistence</h3>
-            <p>JPA, Querydsl, MyBatis, PostgreSQL</p>
-          </article>
-          <article>
-            <h3>Realtime</h3>
-            <p>WebSocket, STOMP, Kafka event flow</p>
-          </article>
-          <article>
-            <h3>Quality</h3>
-            <p>JUnit 5, Spring Security Test, Kafka Test</p>
-          </article>
-        </div>
-      </section>
+            <!-- ----------------------------------------
+                 SECTION 3: PORTFOLIO (PROJECTS) - 프로젝트 상세 영역
+                 ---------------------------------------- -->
+            <section id="projects" class="py-16 md:py-24 px-6 md:px-12 lg:px-16 border-b border-zinc-100 dark:border-zinc-900/60">
+                <div class="max-w-3xl space-y-16">
+                    
+                    <div class="space-y-3">
+                        <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">03. Portfolio</span>
+                        <p class="text-xs text-zinc-400">직접 극복해낸 데이터 병목 문제와 해결 과정을 구조화된 명세로 기술합니다.</p>
+                    </div>
 
-      <section class="section architecture-section">
-        <div class="architecture-copy">
-          <p class="kicker">Architecture</p>
-          <h2>계층을 나눠 변경 지점을 줄였습니다.</h2>
-          <p>
-            Controller는 요청과 응답을, Application은 유스케이스와 트랜잭션을,
-            Domain은 상태와 규칙을, Infrastructure는 저장소 구현을 맡도록 구성했습니다.
-          </p>
-        </div>
-        <div class="architecture-visual" aria-label="아키텍처 계층">
-          <div><strong>Presentation</strong><span>Controller / DTO</span></div>
-          <div><strong>Application</strong><span>Use case / Transaction</span></div>
-          <div><strong>Domain</strong><span>Listing / Chat / Trade</span></div>
-          <div><strong>Infrastructure</strong><span>JPA / Querydsl / MyBatis</span></div>
-        </div>
-      </section>
+                    <!-- 편집형 프로젝트 목록 슬롯 -->
+                    <div class="space-y-20">
+                        
+                        <!-- [수정 영역] 프로젝트 1 명세 (이름, 분류, 수치 뱃지, 설명, 트러블슈팅 매트릭스, 아키텍처 다이어그램 등) -->
+                        <div class="space-y-6">
+                            <!-- 헤더 요약 정보 -->
+                            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-zinc-100 dark:border-zinc-900 pb-4">
+                                <div class="space-y-1">
+                                    <h3 class="text-lg font-bold text-zinc-900 dark:text-white">선착순 쿠폰 발급 시스템 (분산 동시성 제어)</h3>
+                                    <p class="text-xs font-mono text-zinc-500">E-commerce Backend Service Optimizer</p>
+                                </div>
+                                <span class="text-[10px] font-mono border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/20 font-semibold w-fit">10,000+ TPS 처리 성공</span>
+                            </div>
 
-      <section id="contact" class="contact">
-        <div>
-          <p class="kicker">Contact</p>
-          <h2>기능의 이유와 실패 케이스까지 확인하는 개발자가 되겠습니다.</h2>
-        </div>
-        <div class="contact-links">
-          <a class="btn primary" href="mailto:TODO-email@example.com">Email</a>
-          <a class="btn ghost" href="https://github.com/TODO-username">GitHub</a>
-        </div>
-      </section>
-    </main>
+                            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                대규모 선착순 프로모션 환경에서 일순간 몰려오는 수만 건의 트래픽을 처리하며 DB 커넥션 풀 고갈과 쿠폰 초과 발급 버그를 극복해내기 위해 구축된 아키텍처 최적화 프로젝트입니다.
+                            </p>
 
-    <footer class="footer">
-      <p>TODO: 이름 · Backend Developer Portfolio</p>
-    </footer>
-  </body>
+                            <!-- 기술 트러블슈팅 매트릭스 매칭 테이블 -->
+                            <div class="space-y-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs py-1">
+                                    <div class="sm:col-span-3 font-mono font-bold text-zinc-400">병목 현상</div>
+                                    <div class="sm:col-span-9 text-zinc-700 dark:text-zinc-300">낙관적 락(Optimistic Lock) 사용 시 트랜잭션 충돌로 인한 데드락 폭증, DB 부하로 서비스 전체 지연 현상 발생.</div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs py-1 border-y border-zinc-100 dark:border-zinc-900/60">
+                                    <div class="sm:col-span-3 font-mono font-bold text-zinc-400">해결 전략</div>
+                                    <div class="sm:col-span-9 text-zinc-700 dark:text-zinc-300">Lettuce 기반 Redis 분산 락(Spin Lock) 구조를 선적용하여 비즈니스 데이터 무결성을 유지하고, RabbitMQ 비동기 대기열로 부하를 안정 분산.</div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs py-1">
+                                    <div class="sm:col-span-3 font-mono font-bold text-zinc-400">개선 결과</div>
+                                    <div class="sm:col-span-9 font-medium text-emerald-600 dark:text-emerald-400">초당 쿠폰 발급 지연(API Latency) 42ms → 1.2ms로 97% 감소, 10,000 TPS 동시 테스트 시 초과 발급률 0% 달성.</div>
+                                </div>
+                            </div>
+
+                            <!-- 미니 SVG 기반 시스템 아키텍처 다이어그램 -->
+                            <div class="rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-950/40 p-4 max-w-xl">
+                                <span class="text-[9px] font-mono text-zinc-400 block mb-2 uppercase tracking-wider">ARCHITECTURE PIPELINE</span>
+                                <svg viewBox="0 0 400 140" class="w-full">
+                                    <rect x="10" y="45" width="55" height="40" rx="4" fill="transparent" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <text x="37" y="68" font-family="Pretendard" font-size="9" fill="currentColor" text-anchor="middle" font-weight="bold">Client</text>
+
+                                    <path d="M 65 65 L 115 65" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <polygon points="115,65 110,62 110,68" fill="currentColor" class="text-zinc-400" />
+
+                                    <rect x="120" y="45" width="80" height="40" rx="4" fill="transparent" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <text x="160" y="68" font-family="Pretendard" font-size="9" fill="currentColor" text-anchor="middle" font-weight="bold">Spring Boot</text>
+
+                                    <path d="M 160 45 L 160 25 L 245 25" stroke="currentColor" stroke-width="1" stroke-dasharray="2" class="text-zinc-300 dark:text-zinc-800" />
+                                    <rect x="250" y="10" width="100" height="30" rx="4" fill="transparent" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <text x="300" y="28" font-family="Pretendard" font-size="9" fill="currentColor" text-anchor="middle" font-weight="bold">Redis Lock</text>
+
+                                    <path d="M 200 65 L 245 65" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <polygon points="245,65 240,62 240,68" fill="currentColor" class="text-zinc-400" />
+                                    
+                                    <rect x="250" y="50" width="100" height="30" rx="4" fill="transparent" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <text x="300" y="68" font-family="Pretendard" font-size="9" fill="currentColor" text-anchor="middle" font-weight="bold">RabbitMQ</text>
+
+                                    <path d="M 300 80 L 300 100" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <polygon points="300,100 297,95 303,95" fill="currentColor" class="text-zinc-400" />
+                                    
+                                    <rect x="250" y="102" width="100" height="30" rx="4" fill="transparent" stroke="currentColor" stroke-width="1" class="text-zinc-300 dark:text-zinc-800" />
+                                    <text x="300" y="120" font-family="Pretendard" font-size="9" fill="currentColor" text-anchor="middle" font-weight="bold">Async MySQL DB</text>
+                                </svg>
+                            </div>
+
+                            <!-- 하단 사용 기술 태그 및 깃허브 코드 연결 링크 -->
+                            <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+                                <div class="flex flex-wrap gap-1">
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">Spring Boot 3</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">Redis Lock</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">RabbitMQ</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">MySQL</span>
+                                </div>
+                                <div class="flex space-x-2 text-[11px] font-mono">
+                                    <!-- [수정 영역] 프로젝트 깃허브 주소 링크 -->
+                                    <a href="https://github.com/tunkcalb" target="_blank" class="text-zinc-500 hover:text-zinc-950 dark:hover:text-white flex items-center gap-1">
+                                        <i class="fa-brands fa-github"></i> Source Code
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- [수정 영역] 프로젝트 2 명세 -->
+                        <div class="space-y-6">
+                            <!-- 헤더 요약 정보 -->
+                            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-zinc-100 dark:border-zinc-900 pb-4">
+                                <div class="space-y-1">
+                                    <h3 class="text-lg font-bold text-zinc-900 dark:text-white">분산 환경 실시간 경매 및 웹소켓 메시징 서버</h3>
+                                    <p class="text-xs font-mono text-zinc-500">Real-time WebSocket Pub/Sub Engine</p>
+                                </div>
+                                <span class="text-[10px] font-mono border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/20 font-semibold w-fit">안정적인 분산 세션 동기화</span>
+                            </div>
+
+                            <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                로드밸런싱을 통해 다수의 스프링 서버가 운영되는 분산(Scale-out) 노드 환경에서, 경매 입찰 및 채팅 웹소켓 세션 동기화가 불일치하는 결함을 해결한 실시간 메시징 백엔드 프로젝트입니다.
+                            </p>
+
+                            <!-- 기술 트러블슈팅 매트릭스 매칭 테이블 -->
+                            <div class="space-y-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs py-1">
+                                    <div class="sm:col-span-3 font-mono font-bold text-zinc-400">병목 현상</div>
+                                    <div class="sm:col-span-9 text-zinc-700 dark:text-zinc-300">서버 인스턴스가 분산 배치되면서 타 서버에 연결된 클라이언트 간의 세션 정보 부재로 실시간 정보 유실 발생.</div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs py-1 border-y border-zinc-100 dark:border-zinc-900/60">
+                                    <div class="sm:col-span-3 font-mono font-bold text-zinc-400">해결 전략</div>
+                                    <div class="sm:col-span-9 text-zinc-700 dark:text-zinc-300">Redis Pub/Sub을 글로벌 메시지 브로커로 지정해, 입찰 데이터 수신 시 활성화된 전체 노드에 브로드캐스팅해 일관성 보장.</div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs py-1">
+                                    <div class="sm:col-span-3 font-mono font-bold text-zinc-400">개선 결과</div>
+                                    <div class="sm:col-span-9 font-medium text-emerald-600 dark:text-emerald-400">채팅 및 입찰 내역의 지연 시간을 비동기 MongoDB 벌크 쓰기(BulkWrite)로 전환하여 디스크 I/O 부하 35% 절감 성공.</div>
+                                </div>
+                            </div>
+
+                            <!-- 하단 사용 기술 태그 및 깃허브 코드 연결 링크 -->
+                            <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+                                <div class="flex flex-wrap gap-1">
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">WebSocket (STOMP)</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">Redis Pub/Sub</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">MongoDB</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-50 dark:bg-zinc-900 rounded border border-zinc-100 dark:border-zinc-800">Nginx Scale-out</span>
+                                </div>
+                                <div class="flex space-x-2 text-[11px] font-mono">
+                                    <!-- [수정 영역] 프로젝트 깃허브 주소 링크 -->
+                                    <a href="https://github.com/tunkcalb" target="_blank" class="text-zinc-505 hover:text-zinc-950 dark:hover:text-white flex items-center gap-1">
+                                        <i class="fa-brands fa-github"></i> Source Code
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ----------------------------------------
+                 SECTION 4: EXPERIENCES (TIMELINE) - 이력 및 활동 타임라인 영역
+                 ---------------------------------------- -->
+            <section id="experience" class="py-16 md:py-24 px-6 md:px-12 lg:px-16 border-b border-zinc-100 dark:border-zinc-900/60">
+                <div class="max-w-3xl space-y-12">
+                    
+                    <div class="space-y-3">
+                        <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">04. Experiences & Education</span>
+                        <p class="text-xs text-zinc-400">백엔드 엔지니어로서 학습한 기술적 토대와 대외 활동을 요약합니다.</p>
+                    </div>
+
+                    <!-- 버티컬 라인 기반 정돈 타임라인 목록 -->
+                    <div class="space-y-10 pl-4 border-l-2 border-zinc-100 dark:border-zinc-900">
+                        
+                        <!-- [수정 영역] 대외활동/경력 1 -->
+                        <div class="relative space-y-2">
+                            <!-- 버티컬 도트 데코레이터 -->
+                            <span class="absolute -left-[23px] top-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-white dark:ring-zinc-950"></span>
+                            
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <h3 class="text-sm font-bold text-zinc-950 dark:text-white">오픈소스 연계 SW 부트캠프 수료</h3>
+                                <span class="text-xs font-mono text-zinc-400 font-semibold">2025.07 ~ 2026.01</span>
+                            </div>
+                            <h4 class="text-xs text-zinc-500">웹 백엔드 아키텍처 및 분산 환경 설계 이수</h4>
+                            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl">
+                                AWS 상에서 가상 분산 백엔드 구동 환경을 실습하고, Mockito 프레임워크를 연동한 정밀 테스트 주도 개발(TDD)을 중점 훈련했습니다.
+                            </p>
+                        </div>
+
+                        <!-- [수정 영역] 학력/졸업 정보 2 -->
+                        <div class="relative space-y-2">
+                            <!-- 버티컬 도트 데코레이터 -->
+                            <span class="absolute -left-[23px] top-1.5 w-2 h-2 rounded-full bg-zinc-200 dark:bg-zinc-800 ring-4 ring-white dark:ring-zinc-950"></span>
+                            
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                <h3 class="text-sm font-bold text-zinc-950 dark:text-white">한국대학교 컴퓨터공학과 학부 졸업</h3>
+                                <span class="text-xs font-mono text-zinc-400 font-semibold">2022.03 ~ 2026.02</span>
+                            </div>
+                            <h4 class="text-xs text-zinc-505">학점: 3.82 / 4.5</h4>
+                            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-xl">
+                                알고리즘, 자료구조, OS 동시성 격리 구조, RDB 정규화 등 CS 전반의 실천적 기술 지식을 이수해 백엔드 전반의 기틀을 다졌습니다.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ----------------------------------------
+                 SECTION 5: CERTIFICATION - 자격증 영역 (복구)
+                 ---------------------------------------- -->
+            <section id="certification" class="py-16 md:py-24 px-6 md:px-12 lg:px-16 border-b border-zinc-100 dark:border-zinc-900/60">
+                <div class="max-w-3xl space-y-12">
+                    
+                    <div class="space-y-3">
+                        <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">05. Certification</span>
+                        <p class="text-xs text-zinc-400">보유하고 있는 공인 기술 및 데이터베이스 자격증 요건입니다.</p>
+                    </div>
+
+                    <!-- 프리미엄 미니멀 카드 그리드 레이아웃 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- 정보처리기사 -->
+                        <div class="group flex items-start p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 bg-zinc-50/30 dark:bg-zinc-900/10 hover:bg-zinc-50/80 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                            <div class="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                <i class="fa-solid fa-file-shield text-base"></i>
+                            </div>
+                            <div class="ml-4 space-y-1">
+                                <h3 class="text-sm font-bold text-zinc-900 dark:text-white">정보처리기사</h3>
+                                <p class="text-[10px] font-mono text-zinc-400">취득일: 2024.06.18</p>
+                                <p class="text-[11px] text-zinc-500 leading-tight">한국산업인력공단 발행 (소프트웨어 공학 설계, 운영 체제 및 인프라 기본 지식 검증)</p>
+                            </div>
+                        </div>
+
+                        <!-- SQLD -->
+                        <div class="group flex items-start p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 bg-zinc-50/30 dark:bg-zinc-900/10 hover:bg-zinc-50/80 dark:hover:bg-zinc-900/20 transition-all duration-200">
+                            <div class="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                                <i class="fa-solid fa-database text-base"></i>
+                            </div>
+                            <div class="ml-4 space-y-1">
+                                <h3 class="text-sm font-bold text-zinc-900 dark:text-white">SQLD (SQL 개발자)</h3>
+                                <p class="text-[10px] font-mono text-zinc-400">취득일: 2024.04.05</p>
+                                <p class="text-[11px] text-zinc-500 leading-tight">한국데이터산업진흥원 발행 (관계형 모델링 및 고성능 SQL 가공·설계 역량 검증)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ----------------------------------------
+                 SECTION 6: CONTACT ME - 연락처 및 링크 그리드 카드 영역
+                 ---------------------------------------- -->
+            <section id="contact" class="py-16 md:py-24 pb-48 md:pb-64 px-6 md:px-12 lg:px-16">
+                <div class="max-w-3xl space-y-10">
+                    
+                    <div class="space-y-4">
+                        <span class="text-xs font-mono font-bold tracking-widest uppercase text-emerald-500">06. Contact Me</span>
+                        <!-- [수정 영역] 채용 제안 유도 타이틀 설명 -->
+                        <h3 class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">함께 견고한 백엔드 아키텍처를 논의할 준비가 되셨나요?</h3>
+                        <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl">
+                            안정성 있는 락 설계, 효율적인 데이터 튜닝을 고도화할 정직하고 끈기 있는 신입 엔지니어를 적극 물색하고 계시다면 언제든 편히 연락해 주세요.
+                        </p>
+                    </div>
+
+                    <!-- 2x2 그리드형 미니멀 연락처 카드 액션박스 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+                        
+                        <!-- [수정 영역] 전화번호 정보 -->
+                        <div class="p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 bg-zinc-50/30 dark:bg-zinc-900/10 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-zinc-400 dark:text-zinc-505 w-4 text-center"><i class="fa-solid fa-phone text-xs"></i></div>
+                                <div class="space-y-0.5">
+                                    <span class="block text-[10px] uppercase font-mono tracking-wider text-zinc-400">Phone</span>
+                                    <span class="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 select-all" id="phone-num">010-3994-3264</span>
+                                </div>
+                            </div>
+                            <button onclick="copyElementText('phone-num', 'Phone number copied!')" class="api-btn p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-400 dark:text-zinc-300" title="전화번호 복사">
+                                <i class="fa-regular fa-copy text-[11px]"></i>
+                            </button>
+                        </div>
+
+                        <!-- [수정 영역] 이메일 주소 정보 -->
+                        <div class="p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 bg-zinc-50/30 dark:bg-zinc-900/10 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-zinc-400 dark:text-zinc-505 w-4 text-center"><i class="fa-regular fa-envelope text-xs"></i></div>
+                                <div class="space-y-0.5">
+                                    <span class="block text-[10px] uppercase font-mono tracking-wider text-zinc-400">Email</span>
+                                    <span class="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 select-all" id="email-address">wjdgusdndi@gmail.com</span>
+                                </div>
+                            </div>
+                            <button onclick="copyElementText('email-address', 'Email copied!')" class="api-btn p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-400 dark:text-zinc-300" title="이메일 주소 복사">
+                                <i class="fa-regular fa-copy text-[11px]"></i>
+                            </button>
+                        </div>
+
+                        <!-- [수정 영역] 깃허브 아이디 및 연결 URL 링크 -->
+                        <div class="p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 bg-zinc-50/30 dark:bg-zinc-900/10 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-zinc-400 dark:text-zinc-505 w-4 text-center"><i class="fa-brands fa-github text-xs"></i></div>
+                                <div class="space-y-0.5">
+                                    <span class="block text-[10px] uppercase font-mono tracking-wider text-zinc-400">Github</span>
+                                    <span class="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">github.com/tunkcalb</span>
+                                </div>
+                            </div>
+                            <a href="https://github.com/tunkcalb" target="_blank" class="api-btn p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-400 dark:text-zinc-300" title="깃허브 바로가기">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+
+                        <!-- [수정 영역] 벨로그 블로그 아이디 및 연결 URL 링크 -->
+                        <div class="p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 bg-zinc-50/30 dark:bg-zinc-900/10 flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-zinc-400 dark:text-zinc-505 w-4 text-center"><i class="fa-solid fa-arrow-trend-up text-xs"></i></div>
+                                <div class="space-y-0.5">
+                                    <span class="block text-[10px] uppercase font-mono tracking-wider text-zinc-400">Blog</span>
+                                    <span class="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200">velog.io/@tunkcalb</span>
+                                </div>
+                            </div>
+                            <a href="https://velog.io/@tunkcalb/posts" target="_blank" class="api-btn p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-400 dark:text-zinc-300" title="블로그 바로가기">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                    
+                    <!-- 클립보드 복사 완료 알림 레이어 -->
+                    <div id="copy-toast" class="text-emerald-500 text-[10px] font-mono h-4 opacity-0 transition-opacity duration-300">Success: Copied!</div>
+
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==========================================
+         [INTERACTIVE JAVASCRIPT LOGICS] - 동적 제어 스크립트 공간
+         ========================================== -->
+    <script>
+        // --- 모바일 드로워 메뉴 열고 닫기 로직 ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileDrawer.classList.remove('hidden');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark text-sm"></i>';
+            } else {
+                mobileDrawer.classList.add('hidden');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars text-sm"></i>';
+            }
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars text-sm"></i>';
+            });
+        });
+
+        // --- 스크롤 오프셋 실시간 감지(Scrollspy) 및 좌측 사이드바 하이라이트 동기화 ---
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const scrollHeight = document.documentElement.scrollHeight;
+
+            // 브라우저가 최하단 스크롤 영역에 도달했을 때 (Contact 섹션 예외 강제 매칭)
+            if (scrollPosition + windowHeight >= scrollHeight - 80) {
+                current = 'contact';
+            } else {
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    // 가독성을 위한 마진 오프셋 수치 설정 (220px 기준 선)
+                    if (scrollPosition >= (sectionTop - 220)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // --- 다크 / 라이트 테마 전환 제어 컨트롤 시스템 ---
+        const themeToggleBtns = [document.getElementById('theme-toggle'), document.getElementById('theme-toggle-mobile')];
+        const themeToggleIcons = document.querySelectorAll('.theme-toggle-icon');
+        const htmlElement = document.documentElement;
+
+        // 브라우저 로컬 저장 테마 분석 후 선반영
+        if (localStorage.getItem('theme') === 'dark') {
+            htmlElement.classList.add('dark');
+            themeToggleIcons.forEach(icon => icon.className = 'theme-toggle-icon fa-solid fa-sun text-xs sm:text-sm');
+        } else {
+            htmlElement.classList.remove('dark');
+            themeToggleIcons.forEach(icon => icon.className = 'theme-toggle-icon fa-solid fa-moon text-xs sm:text-sm');
+        }
+
+        themeToggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (htmlElement.classList.contains('dark')) {
+                    htmlElement.classList.remove('dark');
+                    themeToggleIcons.forEach(icon => icon.className = 'theme-toggle-icon fa-solid fa-moon text-xs sm:text-sm');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    htmlElement.classList.add('dark');
+                    themeToggleIcons.forEach(icon => icon.className = 'theme-toggle-icon fa-solid fa-sun text-xs sm:text-sm');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        });
+
+        // --- 클립보드 안전 복사 모듈 ---
+        function copyElementText(elementId, successMessage) {
+            const targetText = document.getElementById(elementId).innerText;
+            const tempInput = document.createElement('input');
+            tempInput.value = targetText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // 알림 토스트 가동
+            const toast = document.getElementById('copy-toast');
+            toast.innerText = `Success: ${successMessage}`;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        // --- [수정 영역] API 시뮬레이터 응답 데이터 커스텀 가능 ---
+        const apiData = {
+            getProfile: {
+                headers: { "Status": "200 OK", "Latency": "14ms" },
+                body: {
+                    "developer": "홍길동",
+                    "role": "Backend Application Engineer",
+                    "experience": "Junior / Entry-Level",
+                    "specialty": "Distributed Concurrency, Query Tuning, Messaging Queue",
+                    "status": "Available_for_Interviews"
+                }
+            },
+            getSkills: {
+                headers: { "Status": "200 OK", "Latency": "11ms" },
+                body: {
+                    "languages": ["Java", "SQL", "HTML/CSS/JS"],
+                    "frameworks": ["Spring", "JPA", "QueryDSL"],
+                    "infra_devops": ["Jenkins", "Nginx", "Docker", "Git/GitHub/GitLab"],
+                    "databases": ["MySQL"]
+                }
+            },
+            getProjects: {
+                headers: { "Status": "200 OK", "Latency": "18ms" },
+                body: {
+                    "total_count": 2,
+                    "projects": [
+                        {
+                            "id": 1,
+                            "title": "선착순 쿠폰 발급 시스템 (분산 동시성 제어)",
+                            "tps": "10,000+ TPS",
+                            "key_tech": ["Spring Boot", "Redis", "RabbitMQ", "MySQL"]
+                        },
+                        {
+                            "id": 2,
+                            "title": "분산 환경 실시간 경매 및 웹소켓 메시징 서버",
+                            "architecture": "Scale-out WebSocket Sessions",
+                            "key_tech": ["STOMP", "Redis Pub/Sub", "MongoDB", "Nginx"]
+                        }
+                    ]
+                }
+            }
+        };
+
+        function triggerApi(endpoint) {
+            const resBox = document.getElementById('json-response');
+            const latencyElement = document.getElementById('response-time');
+            const statusElement = document.getElementById('response-status');
+            
+            // 데이터 수신 로딩 연출
+            resBox.innerHTML = "/* Querying v1 backend REST gateway... */";
+            latencyElement.innerText = "Latency: Fetching...";
+            statusElement.innerText = "Status: --";
+            
+            // 타겟 엔드포인트 응답 가상 딜레이 처리
+            setTimeout(() => {
+                const target = apiData[endpoint];
+                resBox.innerHTML = JSON.stringify(target.body, null, 4);
+                latencyElement.innerText = `Latency: ${target.headers.Latency}`;
+                statusElement.innerText = `Status: ${target.headers.Status}`;
+            }, 450);
+        }
+    </script>
+</body>
 </html>
